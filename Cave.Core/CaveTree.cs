@@ -70,5 +70,28 @@ namespace Cave.Core
 
             return tree;
         }
+
+        public void ResolveCoordinates()
+        {
+            var root = pointsDict.Values.Any(point => point.Point.HasValue);
+
+        }
+
+        private void Bfs(CavePoint root)
+        {
+            Queue<CavePoint> queue = new Queue<CavePoint>();
+            queue.Enqueue(root);
+            HashSet<string> used = new HashSet<string>();
+            
+            while(queue.Count>0)
+            {
+                var v = queue.Dequeue();
+                used.Add(v.Name);
+                //foreach (var VARIABLE in used)
+                //{
+                    
+                //}
+            }
+        }
     }
 }
