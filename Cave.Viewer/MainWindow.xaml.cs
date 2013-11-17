@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,6 +16,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HelixToolkit.Wpf;
+using Cave.Core;
 
 namespace Cave.Viewer
 {
@@ -24,6 +27,7 @@ namespace Cave.Viewer
     {
         public MainWindow()
         {
+            //log4net.Config.XmlConfigurator.Configure();
             InitializeComponent();
             DataContext = new MainViewModel();
         }
@@ -50,9 +54,20 @@ namespace Cave.Viewer
 
         private void CreateModel()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
             var m = new Model3DGroup();
 
-            var tm = new MeshBuilder(false, false);
+            var graph = CaveGraph.ReadCave(".\\Examples\\cave1.csv");
+
+            var caveModel = graph.Render(CaveViewType.Tubes);
+
+            foreach (var geometry in caveModel.Geometry)
+            {
+                m.Children.Add(new GeometryModel3D(geometry.Model, Materials.Brown){BackMaterial = Materials.Blue});
+            }
+
+            /*var tm = new MeshBuilder(false, false);
 
             List<Point3D> points = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(0, 0, 4) };
             var diameters = new double[] {6, 2};
@@ -60,8 +75,8 @@ namespace Cave.Viewer
             tm.AddTube(points, new double[]{0,0}, diameters, 20, false);
 
             var mesh = tm.ToMesh();
-            
             m.Children.Add(new GeometryModel3D(tm.ToMesh(), Materials.Red) { BackMaterial = Materials.Blue });
+             */
             Model = m;
         }
 

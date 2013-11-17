@@ -4,36 +4,37 @@ using System.Globalization;
 
 namespace Cave.Core
 {
-    public abstract class CaveBase
+    public abstract class CaveBaseViewModel
     {
-        private List<IGeometry> _geometry = new List<IGeometry>();
+        protected CaveGraph _caveGraph;
+        protected List<IGeometry> _geometry = new List<IGeometry>();
 
         public IEnumerable<IGeometry> Geometry { get { return _geometry; } }
 
-        protected CaveBase()
+        protected CaveBaseViewModel(CaveGraph caveGraph)
         {
+            _caveGraph = caveGraph;
+            Build();
         }
 
-        protected CaveBase(IEnumerable<CaveEdge> segments)
+        protected virtual void Build()
         {
-            foreach (var segment in segments)
+            foreach (var kv in _caveGraph.CaveStruct)
             {
-                AddSegment(segment.StartPoint, segment.EndPoint);
+                foreach (var caveEdge in kv.Value)
+                {
+                    _geometry.Add(GetGeometry(kv.Key, caveEdge.EndPoint));
+                }
             }
         }
-
-        public void AddSegment(CavePoint p1, CavePoint p2)
-        {
-            _geometry.Add(GetGeometry(p1,p2));
-        }
-
+        
         protected abstract IGeometry GetGeometry(CavePoint p1, CavePoint p2);
         
     }
 
-    public class LineCave : CaveBase
+    public class LineCaveViewModel : CaveBaseViewModel
     {
-        public LineCave(IEnumerable<CaveEdge> segments) : base(segments)
+        public LineCaveViewModel(CaveGraph caveGraph) : base(caveGraph)
         {}
 
         protected override IGeometry GetGeometry(CavePoint p1, CavePoint p2)
@@ -42,14 +43,15 @@ namespace Cave.Core
             {
                 return new LineSegment(p1.Point.Value, p2.Point.Value);
             }
+
             LogManager.GetCurrentClassLogger().ErrorFormat("Can not build LineSegment one of the points has empty coordinates. p1Name={0}, p2Name={1}", p1.Name, p2.Name);
             return null;
         }
     }
 
-    public class TubeCave : CaveBase
+    public class TubeCaveViewModel : CaveBaseViewModel
     {
-        public TubeCave(IEnumerable<CaveEdge> segments) : base(segments)
+        public TubeCaveViewModel(CaveGraph caveGraph) : base(caveGraph)
         {}
 
         protected override IGeometry GetGeometry(CavePoint p1, CavePoint p2)

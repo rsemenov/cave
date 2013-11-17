@@ -16,7 +16,7 @@ namespace Cave.Core
             EndPoint = endPoint;
 
             var meshBuilder = new MeshBuilder(false, false);
-            meshBuilder.AddCylinder(startPoint, endPoint, 5, 20);
+            meshBuilder.AddCylinder(startPoint, endPoint, 0.2, 10);
                 
             Model = meshBuilder.ToMesh();
 

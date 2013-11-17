@@ -7,15 +7,20 @@ using Common.Logging;
 
 namespace Cave.Core
 {
-    public class CaveTree
+    public class CaveGraph
     {
         protected Dictionary<string, CavePoint> pointsDict = new Dictionary<string, CavePoint>();
+
         protected Dictionary<CavePoint, IList<CaveEdge>> dict = new Dictionary<CavePoint, IList<CaveEdge>>();
 
-        public static CaveTree ReadCave(string csvFilePath)
+        public Dictionary<CavePoint, IList<CaveEdge>> CaveStruct { get { return dict; } }
+        
+        private ILog _log = LogManager.GetCurrentClassLogger();
+
+        public static CaveGraph ReadCave(string csvFilePath)
         {
             var lines = File.ReadAllLines(csvFilePath);
-            var tree = new CaveTree();
+            var tree = new CaveGraph();
 
             for( int i=1; i<lines.Length; i++)
             {
@@ -52,7 +57,7 @@ namespace Cave.Core
                 }
 
                 double len, azimuth, vangel;
-                if(double.TryParse(parts[4], out len) && double.TryParse(parts[4], out azimuth) && double.TryParse(parts[4], out vangel))
+                if(double.TryParse(parts[4], out len) && double.TryParse(parts[3], out azimuth) && double.TryParse(parts[2], out vangel))
                 {
                     var edge = new CaveEdge(p1, p2, len, azimuth, vangel);
                     if(!tree.dict.ContainsKey(p1))
@@ -68,13 +73,33 @@ namespace Cave.Core
                 }
             }
 
+            LogManager.GetCurrentClassLogger().InfoFormat("Input cave {0} parsed successfully", csvFilePath);
             return tree;
         }
 
         public void ResolveCoordinates()
         {
-            var root = pointsDict.Values.Any(point => point.Point.HasValue);
+            var root = pointsDict.Values.FirstOrDefault(point => point.Point.HasValue);
+            if (root == null)
+            {
+                _log.ErrorFormat("Can not resolve coordinates. Root with specified coordinates not found");
+                return;
+            }
+            Bfs(root);
+            _log.InfoFormat("Coordinates resolved.");
+        }
 
+        public CaveBaseViewModel Render(CaveViewType type)
+        {
+            ResolveCoordinates();
+            if (type == CaveViewType.Lines)
+            {
+                return new LineCaveViewModel(this);
+            }
+            else
+            {
+                return new TubeCaveViewModel(this);                
+            }
         }
 
         private void Bfs(CavePoint root)
@@ -87,10 +112,21 @@ namespace Cave.Core
             {
                 var v = queue.Dequeue();
                 used.Add(v.Name);
-                //foreach (var VARIABLE in used)
-                //{
-                    
-                //}
+
+                if (!dict.ContainsKey(v))
+                {
+                    continue;
+                }
+
+                foreach (var edge in dict[v])
+                {
+                    if (!used.Contains(edge.EndPoint.Name))
+                    {
+                        edge.ResolveEndCoordinates();
+                        used.Add(edge.EndPoint.Name);
+                        queue.Enqueue(edge.EndPoint);
+                    }
+                }
             }
         }
     }

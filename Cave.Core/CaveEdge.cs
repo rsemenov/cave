@@ -19,12 +19,9 @@ namespace Cave.Core
             Length = length;
             Azimuth = azimuth;
             VerticalAngle = vangle;
-
-            ResolveEndCoordinates();
-            
         }
 
-        private void ResolveEndCoordinates()
+        public void ResolveEndCoordinates()
         {
             if(StartPoint.Point==null)
             {
@@ -32,10 +29,10 @@ namespace Cave.Core
                 return;
             }
 
-            var p = Length*Math.Sin(VerticalAngle);
-            var dx = p*Math.Sin(Azimuth);
-            var dy = p*Math.Cos(Azimuth);
-            var dz = Length*Math.Cos(VerticalAngle);
+            var p = Length*Math.Sin(ToRadian(VerticalAngle));
+            var dx = p*Math.Sin(ToRadian(Azimuth));
+            var dy = p*Math.Cos(ToRadian(Azimuth));
+            var dz = Length*Math.Cos(ToRadian(VerticalAngle));
 
             EndPoint.Point = new Point3D()
                                  {
@@ -43,6 +40,11 @@ namespace Cave.Core
                                      Y = StartPoint.Point.Value.Y + dy,
                                      Z = StartPoint.Point.Value.Z + dz
                                  };
+        }
+
+        private double ToRadian(double a)
+        {
+            return a*Math.PI/360;
         }
     }
 }
