@@ -67,11 +67,13 @@
     <Compile Include="CavePoint.cs" />
     <Compile Include="CaveGraph.cs" />
     <Compile Include="CaveViewType.cs" />
+    <Compile Include="CutingPlane.cs" />
     <Compile Include="GeometryHelper.cs" />
     <Compile Include="IGeometry.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LineSegment.cs" />
+    <Compile Include="Sphere.cs" />
     <Compile Include="TubeSegment.cs" />
   </ItemGroup>
   <ItemGroup>

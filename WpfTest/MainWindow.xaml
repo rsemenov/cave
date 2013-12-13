@@ -1,0 +1,21 @@
+﻿<Window x:Class="CuttingPlanesDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
+        Title="CuttingPlanesDemo" Height="562" Width="614">
+    <Grid>
+        <ht:HelixViewport3D ZoomExtentsWhenLoaded="True" IsHeadLightEnabled="True" CameraRotationMode="Trackball" ShowCoordinateSystem="True">
+            <ht:CuttingPlaneGroup x:Name="cuttingGroup1">
+                <ht:CuttingPlaneGroup.CuttingPlanes>
+                    <ht:Plane3D Position="-1.94566194573403,3.79093295886514,15.7423095388415" Normal="0.123299236104818,-0.227562291436321,-0.965925826289068"/>
+                </ht:CuttingPlaneGroup.CuttingPlanes>
+                <ht:SphereVisual3D Center="-1.94566194573403,3.79093295886514,15.7423095388415" Radius="0.5" BackMaterial="{ht:Material Blue}" Material="{ht:Material LightBlue}"/>
+            </ht:CuttingPlaneGroup>
+            
+            <ht:SphereVisual3D Center="-1.94566194573403,3.79093295886514,15.7423095388415" Radius="0.01" BackMaterial="{ht:Material Blue}" Material="{ht:Material Red}"/>
+
+
+
+        </ht:HelixViewport3D>
+        </Grid>
+</Window>

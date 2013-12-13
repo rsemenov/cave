@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Media.Media3D;
 
 namespace Cave.Core
 {
@@ -21,7 +22,27 @@ namespace Cave.Core
         {
             return Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
         }
-            
+        
+        public static Point3D GetDeltaPoint(Point3D a, Point3D b, double delta)
+        {
+            var c = new Point3D();
+            var ab = b - a;
+            c.X = a.X + (b.X - a.X) * delta / ab.Length;
+            c.Y = a.Y + (b.Y - a.Y) * delta / ab.Length;
+            c.Z = a.Z + (b.Z - a.Z) * delta / ab.Length;
+            return c;
+        }
+
+        public static double GetDeltaDiameter(double r1, double r2, double len, double delta)
+        {
+            if (r1 < r2)
+            {
+                return GetDeltaDiameter(r2, r1, len, len - delta);
+            }
+            var x = len * r2 / (r1 - r2);
+            var r = r1 * (1 - delta / (x + len));
+            return r * 2;
+        }
 
     }
 }

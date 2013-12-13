@@ -31,7 +31,5 @@ namespace Cave.Core
             double b = point.Y - k*point.X;
             return new Line {K = k, B = b};
         }
-
-       
     }
 }

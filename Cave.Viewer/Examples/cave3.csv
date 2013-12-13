@@ -1,0 +1,3 @@
+From,To,Azimuth,Vertical angle,Length,left,right,up,down,x,y,z
+a,3,14.6,15,23.351,1,2,1.3,-,0,0.2,0.5
+3,3a,90,-90,5.8,12.1,0.5,3,0.25,,,

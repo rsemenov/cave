@@ -7,14 +7,18 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Export" IsEnabled="False"/>
+                <MenuItem Header="Lines" IsEnabled="True" Click="MenuItem_Click_1"/>
+                <MenuItem Header="Tubes" IsEnabled="True" Click="MenuItem_Click_2"/>
                 <Separator/>
                 <MenuItem Header="Exit" Click="FileExit_Click"/>
             </MenuItem>
         </Menu>
         <h:HelixViewport3D ZoomExtentsWhenLoaded="True" IsHeadLightEnabled="True" CameraRotationMode="Trackball" ShowCoordinateSystem="True">
             <!--<h:DefaultLightsVisual3D/>-->
-            <ModelVisual3D Content="{Binding Model}"/>
-            <!--<h:CubeVisual3D Width="2" Height="2" Length="2" Fill="#80000000"/>-->
+            <ModelVisual3D Content="{Binding Model}"></ModelVisual3D>
+            
+            
+            <h:CuttingPlaneGroup Content="{Binding Points}"/>
         </h:HelixViewport3D>
     </DockPanel>
 </Window>

@@ -16,11 +16,25 @@ namespace Cave.Core
         public TubeSegment(Point3D startPoint, Point3D endPoint, double d1, double d2)
         {
             var meshBuilder = new MeshBuilder(false, false);
-            var points = new List<Point3D>() { startPoint, endPoint };
-            var diameters = new [] { d1, d2 };
+
+            var h1 = 0.1*d1;
+            var h2 = 0.1*d2;
+            
+            var deltaStart = GeometryHelper.GetDeltaPoint(startPoint, endPoint, h1);
+            var deltaEnd = GeometryHelper.GetDeltaPoint(endPoint, startPoint, h2);
+            var points = new List<Point3D>() { deltaStart, deltaEnd };
+            //var points = new List<Point3D>() { startPoint, endPoint };
+
+            var dd1 = d1*0.9;
+            var dd2 = d2*0.9;
+
+            var diameters = new[] { dd1, dd2 };
+            //var diameters = new[] { d1, d2 };
             meshBuilder.AddTube(points, new double[] { 0, 0 }, diameters, 20, false);
 
             Model = meshBuilder.ToMesh();
         }
+
+        
     }
 }
