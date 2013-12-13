@@ -12,7 +12,7 @@ namespace Cave.Viewer
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = new MainViewModel(".\\Examples\\cave0.csv");
         }
 
         private void FileExit_Click(object sender, RoutedEventArgs e)
@@ -42,6 +42,22 @@ namespace Cave.Viewer
             {
                 var file = saveFileDialog1.FileName;
                 MainViewport3D.Export(file);
+            }
+        }
+
+        private void OpenMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog1 = new OpenFileDialog();
+
+            openFileDialog1.Filter = "MTH (*.mth)|*.mth|CSV (*.csv)|*.csv";
+            openFileDialog1.FilterIndex = 2;
+            openFileDialog1.RestoreDirectory = true;
+
+            if (openFileDialog1.ShowDialog() == true)
+            {
+                var file = openFileDialog1.FileName;
+                DataContext = new MainViewModel(file);
+                MainViewport3D.ResetCamera();
             }
         }
     }

@@ -25,10 +25,10 @@ namespace Cave.Viewer
 
         private CaveGraph caveGraph;
 
-        public MainViewModel()
+        public MainViewModel(string file)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            caveGraph = CaveGraph.ReadCave(".\\Examples\\cave0.csv");
+            caveGraph = CaveGraph.ReadCave(file);
             CreateModel();
         }
 
