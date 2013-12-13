@@ -9,11 +9,12 @@
                 <MenuItem Header="Export" IsEnabled="False"/>
                 <MenuItem Header="Lines" IsEnabled="True" Click="MenuItem_Click_1"/>
                 <MenuItem Header="Tubes" IsEnabled="True" Click="MenuItem_Click_2"/>
+                <MenuItem Header="Export" IsEnabled="True" Click="ExportMenuItem_Click"/>
                 <Separator/>
                 <MenuItem Header="Exit" Click="FileExit_Click"/>
             </MenuItem>
         </Menu>
-        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" IsHeadLightEnabled="True" CameraRotationMode="Trackball" ShowCoordinateSystem="True">
+        <h:HelixViewport3D Name="MainViewport3D" ZoomExtentsWhenLoaded="True" IsHeadLightEnabled="True" CameraRotationMode="Trackball" ShowCoordinateSystem="True">
             <!--<h:DefaultLightsVisual3D/>-->
             <ModelVisual3D Content="{Binding Model}"></ModelVisual3D>
             
