@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Cave.Core;
+using HelixToolkit.Wpf;
 using Microsoft.Win32;
 
 namespace Cave.Viewer
@@ -59,6 +60,37 @@ namespace Cave.Viewer
                 DataContext = new MainViewModel(file);
                 MainViewport3D.ResetCamera();
             }
+        }
+
+        private void RefreshMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewport3D.ResetCamera();
+        }
+
+        private void ListBox_MouseDoubleClick_1(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var selectedPoint = (CavePoint)PointsListBox.SelectedItem;
+            var ind = PointsListBox.SelectedIndex;
+            if (selectedPoint.Point.HasValue)
+            {
+                MainViewport3D.Camera.Position = selectedPoint.Point.Value;
+                
+                var nextPoint = (CavePoint) PointsListBox.Items[PointsListBox.Items.Count-1>ind ? ind + 1 : ind - 1];
+                if (nextPoint.Point.HasValue)
+                {
+                    MainViewport3D.Camera.LookDirection = nextPoint.Point.Value - selectedPoint.Point.Value;
+                }
+            }
+        }
+
+        private void InspectMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewport3D.CameraMode = CameraMode.Inspect;
+        }
+
+        private void WalkArroundMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewport3D.CameraMode = CameraMode.WalkAround;
         }
     }
 }

@@ -50,7 +50,7 @@ namespace Cave.Core
                 }
             }
 
-            for (i = 0; i < lines.Length; i++)
+            for (; i < lines.Length; i++)
             {
                 var line = lines[i];
                 var templ = line.Replace(" ", "").ToLowerInvariant();

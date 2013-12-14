@@ -28,6 +28,8 @@ namespace Cave.Core
                 LogManager.GetCurrentClassLogger().WarnFormat("Cann't resovle EndPoint coordinates for edge {0}-{1}", StartPoint.Name, EndPoint.Name);
                 return;
             }
+
+            StartPoint.ResolveDiameter();
             
             var p = Math.Abs(Length*Math.Sin(ToRadian(VerticalAngle)));
             var dx = p*Math.Sin(ToRadian(Azimuth));
@@ -41,7 +43,12 @@ namespace Cave.Core
                                      Z = StartPoint.Point.Value.Z + dz
                                  };
 
-            var d = EndPoint.Diameter;
+            if (StartPoint.Distances != null && EndPoint.Distances == null)
+            {
+                EndPoint.Distances = StartPoint.Distances;
+            }
+
+            EndPoint.ResolveDiameter();
         }
 
         private double ToRadian(double a)

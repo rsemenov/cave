@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Windows.Media.Media3D;
 using Cave.Core;
 using HelixToolkit.Wpf;
+using System.Collections.Generic;
 
 namespace Cave.Viewer
 {
@@ -21,6 +23,13 @@ namespace Cave.Viewer
         {
             get { return viewType; }
             set { viewType = value; CreateModel(); }
+        }
+
+        private List<CavePoint> _cavePoints;
+        public List<CavePoint> CavePoints
+        {
+            get { return _cavePoints; }
+            set { _cavePoints = value; RaisePropertyChanged("CavePoints"); }
         }
 
         private CaveGraph caveGraph;
@@ -41,6 +50,7 @@ namespace Cave.Viewer
                 m.Children.Add(new GeometryModel3D(geometry.Model, Materials.Brown){BackMaterial = Materials.Blue});
             }
             Model = m;
+            CavePoints = caveGraph.PointsDict.Values.ToList();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

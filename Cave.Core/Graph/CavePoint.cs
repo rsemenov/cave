@@ -7,11 +7,22 @@ namespace Cave.Core
 {
     public class CavePoint
     {
+        private const string coordsTemplate = "{0:0.0000}; {1:0.0000}; {2:0.0000}";
         public string Name { get; set; }
 
         public double[] Distances { get; set; }
 
         public Point3D? Point { get; set; }
+
+        public string Coordinates
+        {
+            get
+            {
+                if (Point.HasValue)
+                    return string.Format(coordsTemplate, Point.Value.X, Point.Value.Y, Point.Value.Z);
+                return "";
+            }
+        }
 
         public double Diameter
         {
@@ -19,23 +30,21 @@ namespace Cave.Core
             {
                 if (_diameter == -1)
                 {
-                    _diameter = GetDiameter();
+                    
+                    ResolveDiameter();
                 }
                 return _diameter;
             }
         }
+        private double _diameter = -1;
 
-        private double GetDiameter()
+        public void ResolveDiameter()
         {
-            if (Distances != null)
-            {
-                var dd = Distances.Where(d => d >= 0);
-                return dd.Sum() / dd.Count();
-            }
-            return 2; 
+            if (_diameter != -1)
+                return;
 
             var points = new List<Point>();
-            if (Distances != null && Point.HasValue)
+            if (Distances != null && Point.HasValue && false)
             {
                 for (int i = 0; i < Distances.Length; i++)
                 {
@@ -63,16 +72,17 @@ namespace Cave.Core
                 {
                     Point center;
                     var d = GeometryHelper.GetDiameterBy3Points(points[0], points[1], points[2], out center);
-                    //UpdateCenter(center);
-                    return d;
+                    _diameter = d;
+                    return;
                 }
             }
             if (Distances != null)
             {
                 var dd = Distances.Where(d => d >= 0);
-                return dd.Sum()/dd.Count();
+                _diameter = dd.Sum()/dd.Count();
+                return;
             }
-            return 1; 
+            _diameter = 2; 
         }
 
         private void UpdateCenter(Point center)
@@ -80,6 +90,5 @@ namespace Cave.Core
             Point = new Point3D(Point.Value.X, center.X, center.Y);
         }
 
-        private double _diameter = -1;
     }
 }
