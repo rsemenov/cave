@@ -23,7 +23,7 @@ namespace Cave.Core
             }
 
             var meshBuilder = new MeshBuilder(false, false);
-            meshBuilder.AddSphere(center, radius, 60, 30);
+            meshBuilder.AddSphere(center, radius, 25, 15);
             var m = meshBuilder.ToMesh();
 
             foreach (var plane3D in CutingPlanes)

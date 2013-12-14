@@ -30,7 +30,7 @@ namespace Cave.Core
 
             var diameters = new[] { dd1, dd2 };
             //var diameters = new[] { d1, d2 };
-            meshBuilder.AddTube(points, new double[] { 0, 0 }, diameters, 20, false);
+            meshBuilder.AddTube(points, new double[] { 0, 0 }, diameters, 10, false);
 
             Model = meshBuilder.ToMesh();
         }
